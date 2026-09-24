@@ -3,3 +3,37 @@ title: "HW 1"
 output: github_document
 date: "2026-09-24"
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Calling necessary packages.
+```{r, message=FALSE}
+library("tidyverse") #for ggplot
+library("palmerpenguins")
+```
+
+### Problem 1
+
+Load the penguins dataset.
+```{r, results= "hide"}
+data("penguins", package = "palmerpenguins")
+
+str(penguins)
+```
+
+In the `penguins` dataset, there are `r nrow(penguins)` rows and `r ncol(penguins)` columns of data. One row corresponds to one penguin. The variables are `r colnames(penguins)`. The `species` column lists one of three penguin species for each individual penguin: Adelie, Chinstrap, and Gintoo. The `island` columns contains the island of each penguin: Biscoe, Dream, and Torgersen. `bill_length_mm` contains each penguin's bill length in mm `bill_depth_mm` states the bill depth in mm. Both bill length and bill depth are expressed with decimals. `flipper_length_mm` and `body_mass_g` both express numeric values that measure the length of a penguin's flipper, and the body mass of each penguin respectively. `sex` is a factor with two levels: "female" and "male". The `year` column expresses the year.The mean of `flipper_length_mm` is `r mean(penguins$flipper_length_mm, na.rm = TRUE )` mm.
+
+Scatterplot of `flipper_length_mm` and `bill_length_mm`
+```{r}
+penguin_scatter = ggplot(penguins, aes(x=bill_length_mm, y=flipper_length_mm, color = species)) + 
+  geom_point(na.rm = TRUE)
+
+penguin_scatter
+```
+ 
+Save plot. 
+```{r}
+ggsave("penguin_scatter.pdf", height = 4, width = 6)
+```
