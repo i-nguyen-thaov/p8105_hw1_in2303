@@ -49,3 +49,86 @@ Save plot.
 ``` r
 ggsave("penguin_scatter.pdf", height = 4, width = 6)
 ```
+
+### Problem 2
+
+Creating a new data frame.
+
+``` r
+set.seed(123)
+
+df_2 = tibble(
+  vec_random = rnorm(10),
+  vec_logic = vec_random > 0,
+  vec_char = c("a","b","c","d","e","f","g","h","i","j"),
+  vec_fact = factor(c("easy","easy","medium","hard","easy","hard","medium","hard","medium","easy"))
+)
+
+print(df_2)
+```
+
+    ## # A tibble: 10 × 4
+    ##    vec_random vec_logic vec_char vec_fact
+    ##         <dbl> <lgl>     <chr>    <fct>   
+    ##  1    -0.560  FALSE     a        easy    
+    ##  2    -0.230  FALSE     b        easy    
+    ##  3     1.56   TRUE      c        medium  
+    ##  4     0.0705 TRUE      d        hard    
+    ##  5     0.129  TRUE      e        easy    
+    ##  6     1.72   TRUE      f        hard    
+    ##  7     0.461  TRUE      g        medium  
+    ##  8    -1.27   FALSE     h        hard    
+    ##  9    -0.687  FALSE     i        medium  
+    ## 10    -0.446  FALSE     j        easy
+
+Taking the mean of each variable
+
+``` r
+mean(pull(df_2, vec_random))
+```
+
+    ## [1] 0.07462564
+
+``` r
+mean(pull(df_2, vec_logic))
+```
+
+    ## [1] 0.5
+
+``` r
+mean(pull(df_2, vec_char))
+```
+
+    ## Warning in mean.default(pull(df_2, vec_char)): argument is not numeric or
+    ## logical: returning NA
+
+    ## [1] NA
+
+``` r
+mean(pull(df_2, vec_fact))
+```
+
+    ## Warning in mean.default(pull(df_2, vec_fact)): argument is not numeric or
+    ## logical: returning NA
+
+    ## [1] NA
+
+- Taking the mean only works for `vec_random` and `vec_logic`.
+  `vec_random` produces numerical values that can be used to take the
+  mean. In logical vectors, TRUE and FALSE can be interpreted as 1 for
+  TRUE and 0 for FALSE, thus giving us the ability to take the mean.
+
+`as.numeric` to our logical, character, and factor variables.
+
+``` r
+as.numeric(pull(df_2, vec_logic))
+as.numeric(pull(df_2, vec_char))
+as.numeric(pull(df_2, vec_fact))
+```
+
+When you convert logic variables to numeric ones, we receive 1’s and 0’s
+since TRUE and FALSE logical values care treated as 1 and 0. For factor
+variables, the strings inside the vector are assigned integer levels. In
+contrast, character variables have no underlying mathematical
+meaning.Thus, we can take the means of logical and factor variables, but
+not character variables.
